@@ -4,12 +4,11 @@
 ;; Copyright (C) 2012 Yuhei Maeda <yuhei.maeda_at_gmail.com>
 
 ;; Author: Kenji.I (Kenji Imakado) <ken.imakaado@gmail.com>
-;; Version: 0.6.2
-;; Package-version: 0.6.2
+;; Version: 0.6.3
+;; Package-version: 0.6.3
 ;; Package-Requires: ()
-;; Package-Requires: ((helm "20120811")(yasnippet "0.7.0"))
+;; Package-Requires: ((helm "20120811")(yasnippet "20120822"))
 ;; Keywords: convenience, emulation
-
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -27,15 +26,15 @@
 ;; Boston, MA 02110-1301, USA.
 
 ;;; Commentary:
-;;
+
 ;; Actions: Insert snippet, Open snippet file, Open snippet file other window
 ;; C-z: execute-persistent-action
 
 ;;; Changelog:
-;;  2012/08/11   port to helm 
-;;               fixed bug on yasnippet 0.7.0 
-;;   
-
+;;  2012/08/11   Port to helm 
+;;               Fixed bug on yasnippet 0.7.0 
+;;  2012/08/23   Support yasnippet 0.8.0  
+;;               
 
 ;;; Commands:
 ;;
@@ -71,10 +70,10 @@
 ;; (require 'helm-c-yasnippet)
 ;; (setq helm-c-yas-space-match-any-greedy t) ;[default: nil]
 ;; (global-set-key (kbd "C-c y") 'helm-c-yas-complete)
-;; (yas/initialize)
-;; (yas/load-directory "<path>/<to>/snippets/")
-;; (add-to-list 'yas/extra-mode-hooks 'ruby-mode-hook)
-;; (add-to-list 'yas/extra-mode-hooks 'cperl-mode-hook)
+;; (yas--initialize)
+;; (yas-load-directory "<path>/<to>/snippets/")
+;; (add-to-list 'yas-extra-mode-hooks 'ruby-mode-hook)
+;; (add-to-list 'yas-extra-mode-hooks 'cperl-mode-hook)
 
 (eval-when-compile
   (require 'cl))
@@ -122,7 +121,7 @@ ex. for (...) { ... }"
   :group 'helm-c-yasnippet)
 
 (defvar helm-c-yas-snippets-dir-list nil)
-(defadvice yas/load-directory-1 (around helm-yas-build-alist activate)
+(defadvice yas-load-directory-1 (around helm-yas-build-alist activate)
   (let ((directory (ad-get-arg 0)))
     (when (stringp directory)
       (add-to-list 'helm-c-yas-snippets-dir-list directory)))
@@ -169,17 +168,17 @@ If SNIPPET-FILE does not contain directory, it is placed in default snippet dire
 
 
 (defun helm-c-yas-build-cur-snippets-alist (&optional table)
-  (let ((yas/choose-keys-first nil)
-        (yas/choose-tables-first nil)
-        (yas/buffer-local-condition 'always))
+  (let ((yas-choose-keys-first nil)
+        (yas-choose-tables-first nil)
+        (yas-buffer-local-condition 'always))
     (let* ((result-alist '((candidates) (transformed) (template-key-alist)(template-file-alist)))
            (cur-tables
             (if table
                 (list table)
-              (yas/get-snippet-tables)))
+              (yas--get-snippet-tables)))
            (hash-value-alist nil))
       (let ((hashes (loop for table in cur-tables
-                          collect (yas/table-hash table))))
+                          collect (yas--table-hash table))))
         (loop for hash in hashes
               do (maphash (lambda (k v)
                             (let (a)
@@ -195,9 +194,9 @@ If SNIPPET-FILE does not contain directory, it is placed in default snippet dire
               for lst in hash-value-alist
               for key = (car lst)
               for template-struct = (cdr lst)
-              for name = (yas/template-name template-struct) ;`yas/template-name'
-              for template = (yas/template-content template-struct) ;`yas/template-content'
-;;              for file = (yas/template-file template-struct) ;`yas/template-content'			  
+              for name = (yas--template-name template-struct) ;`yas--template-name'
+              for template = (yas--template-content template-struct) ;`yas--template-content'
+;;              for file = (yas--template-file template-struct) ;`yas--template-content'			  
               do (progn (push template templates)
                         (push `(,name . ,template) transformed)
 						(push `(,template . ,key) template-key-alist)
@@ -216,7 +215,7 @@ If SNIPPET-FILE does not contain directory, it is placed in default snippet dire
 
 (defun helm-c-yas-get-cmp-context ()
   "Return list (initial-input point-start point-end)
-like `yas/current-key'"
+like `yas--current-key'"
   (let ((start (point))
         (end (point))
         (syntax "w_"))
@@ -329,7 +328,7 @@ space match anyword greedy"
     (candidate-transformer . (lambda (candidates)
                                (helm-c-yas-get-transformed-list helm-c-yas-cur-snippets-alist helm-c-yas-initial-input)))
     (action . (("Insert snippet" . (lambda (template)
-                                     (yas/expand-snippet template helm-c-yas-point-start helm-c-yas-point-end)
+                                     (yas-expand-snippet template helm-c-yas-point-start helm-c-yas-point-end)
                                      (when helm-c-yas-display-msg-after-complete
                                        (message "this snippet is bound to [ %s ]"
                                                 (helm-c-yas-get-key-by-template template helm-c-yas-cur-snippets-alist)))))
@@ -340,7 +339,7 @@ space match anyword greedy"
                ("Create new snippet on region" . (lambda (template)
                                                    (helm-c-yas-create-new-snippet helm-c-yas-selected-text)))
                ("Reload All Snippts" . (lambda (template)
-                                         (yas/reload-all)
+                                         (yas-reload-all)
                                          (message "Reload All Snippts done")))
                ("Rename snippet file" . (lambda (template)
                                        (let* ((path (or (helm-c-yas-get-path-by-template template) ""))
@@ -348,12 +347,12 @@ space match anyword greedy"
                                               (filename (file-name-nondirectory path))
                                               (rename-to (read-string (concat "rename [" filename "] to: "))))
                                          (rename-file path (concat dir rename-to))
-                                         (yas/reload-all))))
+                                         (yas-reload-all))))
                ("Delete snippet file" . (lambda (template)
                                           (let ((path (or (helm-c-yas-get-path-by-template template) "")))
                                             (when (y-or-n-p "really delete?")
                                               (delete-file path)
-                                              (yas/reload-all)))))))
+                                              (yas-reload-all)))))))
     (persistent-action . (lambda (template)
                            (helm-c-yas-find-file-snippet-by-template template)))
     (match . (helm-c-yas-match))))
@@ -361,9 +360,9 @@ space match anyword greedy"
 
 ;;; visit template
 (defun helm-c-yas-all-templates ()
-  (let ((tables (yas/get-snippet-tables)))
+  (let ((tables (yas--get-snippet-tables)))
     (loop for table in tables
-          append (yas/snippet-table-templates table))))
+          append (yas--table-templates table))))
 
 (defun helm-c-yas-flatten-templates (templates)
   (loop for lot in templates ;lot is list of templates
@@ -371,11 +370,11 @@ space match anyword greedy"
 
 (defun helm-c-yas-snippet-files-candidates ()
   "called in `helm-c-source-yasnippet-snippet-files' candidates"
-  (let ((yas/choose-keys-first nil)
-        (yas/choose-tables-first nil)
-        (yas/buffer-local-condition 'always))
+  (let ((yas-choose-keys-first nil)
+        (yas-choose-tables-first nil)
+        (yas-buffer-local-condition 'always))
     (with-current-buffer helm-current-buffer
-      (mapcar* 'yas/template-file
+      (mapcar* 'yas-template-file
                (mapcar 'cdr
                         (helm-c-yas-all-templates))))))
 
