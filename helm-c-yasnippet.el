@@ -31,10 +31,10 @@
 ;; C-z: execute-persistent-action
 
 ;;; Changelog:
-;;  2012/08/11   Port to helm 
-;;               Fixed bug on yasnippet 0.7.0 
-;;  2012/08/23   Support yasnippet 0.8.0  
-;;               
+;;  2012/08/11   Port to helm
+;;               Fixed bug on yasnippet 0.7.0
+;;  2012/08/23   Support yasnippet 0.8.0
+;;
 
 ;;; Commands:
 ;;
@@ -55,9 +55,6 @@
 ;;  `helm-c-yas-display-msg-after-complete'
 ;;    if non-nil display snippet key message in minibuffer after Complete
 ;;    default = t
-;;  `helm-c-yas-snippets-dir-list'
-;;    list of directory used to find snippet file
-;;    default = nil
 ;;  `helm-c-yas-space-match-any-greedy'
 ;;    if non-nil helm pattern space match anyword greedy.
 ;;    default = nil
@@ -97,12 +94,6 @@
   :type 'boolean
   :group 'helm-c-yasnippet)
 
-(defcustom helm-c-yas-snippets-dir-list nil
-  "list of directory used to find snippet file"
-  :type '(repeat (directory
-                  :tag "snippet-directory"))
-  :group 'helm-c-yasnippet)
-
 (defcustom helm-c-yas-space-match-any-greedy nil
   "if non-nil helm pattern space match anyword greedy.
 pattern regexp: \"if else\" replace to \"if.*else\"
@@ -119,13 +110,6 @@ otherwise display just name
 ex. for (...) { ... }"
   :type 'boolean
   :group 'helm-c-yasnippet)
-
-(defvar helm-c-yas-snippets-dir-list nil)
-(defadvice yas-load-directory-1 (around helm-yas-build-alist activate)
-  (let ((directory (ad-get-arg 0)))
-    (when (stringp directory)
-      (add-to-list 'helm-c-yas-snippets-dir-list directory)))
-  ad-do-it)
 
 
 (defun helm-c-yas-create-new-snippet (selected-text &optional snippet-file)
@@ -262,30 +246,6 @@ like `yas--current-key'"
     (setq transformed-list (sort* transformed-list 'string< :key 'car))
     transformed-list))
 
-(defun helm-c-yas-find-snippet-file-by-key (key)
-  (let ((modes (helm-c-yas-get-modes))
-        (snippet-dirs helm-c-yas-snippets-dir-list))
-    (let ((found-path (loop for mode in modes
-                            for test-re = (concat (symbol-name mode) "/" key "$")
-                            for path =  (helm-c-yas-find-snippet-file-aux test-re snippet-dirs)
-                            when path return path)))
-      ;; if not found in major-mode try to find in all dirs
-      (unless found-path
-        (setq found-path (helm-c-yas-find-snippet-file-aux (concat "/" key "$") snippet-dirs)))
-      found-path)))
-
-(defun helm-c-yas-find-snippet-file-aux (test-re dirs)
-  (loop with done
-        with path
-        for directory in dirs
-        for files = (directory-files directory t)
-        unless done
-        do (loop for file in files
-                 when (string-match test-re file)
-                 return (setq done t
-                              path file))
-        finally return path))
-
 (defun helm-c-yas-find-file-snippet-by-template (template &optional other-window)
  (let* ((path (helm-c-yas-get-path-by-template template))
 ;;  (let* ((path (assoc-default template (assoc-default 'template-file-alist helm-c-yas-cur-snippets-alist)))
@@ -312,7 +272,7 @@ space match anyword greedy"
 (defvar helm-c-yas-point-start nil)
 (defvar helm-c-yas-point-end nil)
 (defvar helm-c-yas-cur-major-mode nil)
-(defvar helm-c-yas-selected-text "" "region text if mark-active otherwise \"\"") 
+(defvar helm-c-yas-selected-text "" "region text if mark-active otherwise \"\"")
 (defvar helm-c-source-yasnippet
   `((name . "Yasnippet")
     (init . (lambda ()
