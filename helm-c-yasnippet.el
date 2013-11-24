@@ -171,7 +171,7 @@ If SNIPPET-FILE does not contain directory, it is placed in default snippet dire
   (let ((yas-choose-keys-first nil)
         (yas-choose-tables-first nil)
         (yas-buffer-local-condition 'always))
-    (let* ((result-alist '((candidates) (transformed) (template-key-alist)(template-file-alist)))
+    (let* ((result-alist '((candidates) (transformed) (template-key-alist) (template-file-alist)))
            (cur-tables
             (if table
                 (list table)
@@ -190,21 +190,21 @@ If SNIPPET-FILE does not contain directory, it is placed in default snippet dire
         (loop with transformed
               with templates
               with template-key-alist
-;;              with template-file-alist			  
+              with template-file-alist
               for lst in hash-value-alist
               for key = (car lst)
               for template-struct = (cdr lst)
               for name = (yas--template-name template-struct) ;`yas--template-name'
               for template = (yas--template-content template-struct) ;`yas--template-content'
-;;              for file = (yas--template-file template-struct) ;`yas--template-content'			  
+              for file = (yas--template-file template-struct) ;`yas--template-content'
               do (progn (push template templates)
                         (push `(,name . ,template) transformed)
-						(push `(,template . ,key) template-key-alist)
-               ;;         (push `(,template . ,file) template-file-alist)
-						)
+                        (push `(,template . ,key) template-key-alist)
+                        (push `(,template . ,file) template-file-alist)
+                        )
               finally (progn (push `(candidates . ,templates) result-alist)
                              (push `(transformed . ,transformed) result-alist)
-                 ;;            (push `(template-file-alist . ,template-file-alist) result-alist)
+                             (push `(template-file-alist . ,template-file-alist) result-alist)
                              (push `(template-key-alist . ,template-key-alist) result-alist)))
         result-alist)
       )))
@@ -261,7 +261,7 @@ like `yas--current-key'"
     ;; sort
     (setq transformed-list (sort* transformed-list 'string< :key 'car))
     transformed-list))
- 
+
 (defun helm-c-yas-find-snippet-file-by-key (key)
   (let ((modes (helm-c-yas-get-modes))
         (snippet-dirs helm-c-yas-snippets-dir-list))
@@ -294,11 +294,8 @@ like `yas--current-key'"
         (funcall ff-func path)
       (message "not found snippet file"))))
 
-
 (defun helm-c-yas-get-path-by-template (template)
-  (let* ((key (helm-c-yas-get-key-by-template template helm-c-yas-cur-snippets-alist))
-         (path (helm-c-yas-find-snippet-file-by-key key)))
-    path))
+  (assoc-default template (assoc-default 'template-files-alist helm-c-yas-cur-snippets-alist)))
 
 (defun helm-c-yas-match (candidate)
   "if customize variable `helm-c-yas-space-match-any-greedy' is non-nil
