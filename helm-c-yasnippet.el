@@ -255,7 +255,7 @@ like `yas--current-key'"
       (message "not found snippet file"))))
 
 (defun helm-c-yas-get-path-by-template (template)
-  (assoc-default template (assoc-default 'template-files-alist helm-c-yas-cur-snippets-alist)))
+  (assoc-default template (assoc-default 'template-file-alist helm-c-yas-cur-snippets-alist)))
 
 (defun helm-c-yas-match (candidate)
   "if customize variable `helm-c-yas-space-match-any-greedy' is non-nil
