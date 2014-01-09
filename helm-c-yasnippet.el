@@ -7,7 +7,7 @@
 ;; Version: 0.6.3
 ;; Package-version: 0.6.3
 ;; Package-Requires: ()
-;; Package-Requires: ((helm "20120811")(yasnippet "20120822"))
+;; Package-Requires: ((helm "20120811")(yasnippet "20120822") (cl-lib "0.3"))
 ;; Keywords: convenience, emulation
 
 ;; This file is free software; you can redistribute it and/or modify
@@ -72,8 +72,7 @@
 ;; (add-to-list 'yas-extra-mode-hooks 'ruby-mode-hook)
 ;; (add-to-list 'yas-extra-mode-hooks 'cperl-mode-hook)
 
-(eval-when-compile
-  (require 'cl))
+(require 'cl-lib)
 (require 'helm)
 (require 'yasnippet)
 
@@ -137,7 +136,7 @@ If SNIPPET-FILE does not contain directory, it is placed in default snippet dire
                     (dir 'file-directory-p)
                     (file 'file-regular-p)
                     (otherwise 'identity)))
-        (files (remove-if (lambda (s) (string-match "^\\." (file-name-nondirectory  s))) (directory-files directory t)))
+        (files (cl-remove-if (lambda (s) (string-match "^\\." (file-name-nondirectory  s))) (directory-files directory t)))
         (found nil)
         (result nil))
     (loop for file in files
@@ -226,9 +225,9 @@ like `yas--current-key'"
     (cond
      ;; display key on candidate ex: [for] for (...) { ... }
      (helm-c-yas-display-key-on-candidate
-      (setq transformed-list (remove-if-not (lambda (lst)
-                                              (string-match (concat "^" (regexp-quote initial-input)) (car lst)))
-                                            transformed-list))
+      (setq transformed-list (cl-remove-if-not (lambda (lst)
+                                                 (string-match (concat "^" (regexp-quote initial-input)) (car lst)))
+                                               transformed-list))
       (setq transformed-list (loop for dotlst in transformed-list
                                    for name = (car dotlst)
                                    for template = (cdr dotlst)
@@ -237,13 +236,13 @@ like `yas--current-key'"
                                    collect `(,name-inc-key . ,template))))
      ;; default ex: for (...) { ... }
      (t
-      (setq transformed-list (remove-if-not (lambda (lst)
-                                              (string-match (concat "^" (regexp-quote initial-input)) (car lst)))
-                                            transformed-list))))
+      (setq transformed-list (cl-remove-if-not (lambda (lst)
+                                                 (string-match (concat "^" (regexp-quote initial-input)) (car lst)))
+                                               transformed-list))))
     (when helm-c-yas-not-display-dups
       (setq transformed-list (delete-dups transformed-list)))
     ;; sort
-    (setq transformed-list (sort* transformed-list 'string< :key 'car))
+    (setq transformed-list (cl-sort transformed-list 'string< :key 'car))
     transformed-list))
 
 (defun helm-c-yas-find-file-snippet-by-template (template &optional other-window)
@@ -331,9 +330,9 @@ space match anyword greedy"
         (yas-choose-tables-first nil)
         (yas-buffer-local-condition 'always))
     (with-current-buffer helm-current-buffer
-      (mapcar* 'yas-template-file
-               (mapcar 'cdr
-                        (helm-c-yas-all-templates))))))
+      (cl-mapcar 'yas-template-file
+                 (mapcar 'cdr
+                         (helm-c-yas-all-templates))))))
 
 ;; (helm 'helm-c-source-yasnippet-snippet-files)
 (defvar helm-c-source-yasnippet-snippet-files
