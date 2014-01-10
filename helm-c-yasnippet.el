@@ -8,7 +8,7 @@
 ;; Version: 0.6.3
 ;; Package-version: 0.6.3
 ;; Package-Requires: ()
-;; Package-Requires: ((helm "20120811")(yasnippet "20120822") (cl-lib "0.3"))
+;; Package-Requires: ((helm "1.5.8")(yasnippet "0.8.0") (cl-lib "0.3"))
 ;; Keywords: convenience, emulation
 
 ;; This file is free software; you can redistribute it and/or modify
