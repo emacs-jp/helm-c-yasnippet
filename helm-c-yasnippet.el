@@ -1,7 +1,8 @@
 ;;; helm-c-yasnippet.el --- helm source for yasnippet.el
 
 ;; Copyright (C) 2008, 2009, 2010, 2011 Kenji.I (Kenji Imakado) <ken.imakaado@gmail.com>
-;; Copyright (C) 2012 Yuhei Maeda <yuhei.maeda_at_gmail.com>
+;; Copyright (C) 2012,2013 Yuhei Maeda <yuhei.maeda_at_gmail.com>
+;; Copyright (C) 2014 Yuhei Maeda <yuhei.maeda_at_gmail.com>, Yasuyuki Oka <yasuyk_at_gmail.com>
 
 ;; Author: Kenji.I (Kenji Imakado) <ken.imakaado@gmail.com>
 ;; Version: 0.6.3
