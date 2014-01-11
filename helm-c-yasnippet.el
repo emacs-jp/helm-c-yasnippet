@@ -6,7 +6,6 @@
 
 ;; Author: Kenji.I (Kenji Imakado) <ken.imakaado@gmail.com>
 ;; Version: 0.6.3
-;; Package-version: 0.6.3
 ;; Package-Requires: ((helm "1.5.8")(yasnippet "0.8.0") (cl-lib "0.3"))
 ;; Keywords: convenience, emulation
 
