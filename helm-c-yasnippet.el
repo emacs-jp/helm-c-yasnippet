@@ -76,8 +76,6 @@
 (require 'helm)
 (require 'yasnippet)
 
-(defvar helm-c-yas-version "0.6" "Version of helm-c-yasnippet")
-
 (defgroup helm-c-yasnippet nil
   "helm config yasnippet"
   :group 'helm)
