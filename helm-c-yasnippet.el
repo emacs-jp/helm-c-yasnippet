@@ -71,11 +71,11 @@
 ;; (add-to-list 'yas-extra-mode-hooks 'ruby-mode-hook)
 ;; (add-to-list 'yas-extra-mode-hooks 'cperl-mode-hook)
 
+;;; Code:
 (require 'cl-lib)
 (require 'helm)
 (require 'yasnippet)
 
-;;; Code
 (defvar helm-c-yas-version "0.6" "Version of helm-c-yasnippet")
 
 (defgroup helm-c-yasnippet nil
