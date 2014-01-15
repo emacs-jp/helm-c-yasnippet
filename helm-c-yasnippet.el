@@ -336,16 +336,20 @@ space match anyword greedy"
 
 
 ;;; Commands
+
+;;;###autoload
 (defun helm-c-yas-complete ()
   "List of yasnippet snippets using `helm' interface."
   (interactive)
   (helm 'helm-c-source-yasnippet))
 
+;;;###autoload
 (defun helm-c-yas-visit-snippet-file ()
   "List of yasnippet snippet files"
   (interactive)
   (helm 'helm-c-source-yasnippet-snippet-files))
 
+;;;###autoload
 (defun helm-c-yas-create-snippet-on-region (&optional start end file-name)
   "Create a snippet from region."
   (interactive "r")
