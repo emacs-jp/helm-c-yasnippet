@@ -317,10 +317,6 @@ space match anyword greedy"
     (loop for table in tables
           append (yas--table-templates table))))
 
-(defun helm-c-yas-flatten-templates (templates)
-  (loop for lot in templates ;lot is list of templates
-        append lot))
-
 (defun helm-c-yas-snippet-files-candidates ()
   "called in `helm-c-source-yasnippet-snippet-files' candidates"
   (let ((yas-choose-keys-first nil)
