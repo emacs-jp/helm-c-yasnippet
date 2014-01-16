@@ -111,6 +111,9 @@ ex. for (...) { ... }"
   :type 'function
   :group 'helm-yasnippet)
 
+(defvar helm-yas-cur-major-mode nil)
+(defvar helm-yas-cur-snippets-alist nil)
+
 (defun helm-yas-create-new-snippet-insert (selected-text snippet-file)
   "Insert SELECTED-TEXT into SNIPPET-FILE."
   (let* ((name (file-name-sans-extension
@@ -279,11 +282,9 @@ space match anyword greedy"
    (t
     (string-match helm-pattern candidate))))
 
-(defvar helm-yas-cur-snippets-alist nil)
 (defvar helm-yas-initial-input "")
 (defvar helm-yas-point-start nil)
 (defvar helm-yas-point-end nil)
-(defvar helm-yas-cur-major-mode nil)
 (defvar helm-yas-selected-text "" "region text if mark-active otherwise \"\"")
 (defvar helm-source-yasnippet
   `((name . "Yasnippet")
