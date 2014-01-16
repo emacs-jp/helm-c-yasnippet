@@ -105,7 +105,27 @@ ex. for (...) { ... }"
   :type 'boolean
   :group 'helm-yasnippet)
 
-
+(defcustom helm-yas-create-new-snippet-insert-function
+  'helm-yas-create-new-snippet-insert
+  "Function to be called when create new insert file."
+  :type 'function
+  :group 'helm-yasnippet)
+
+(defun helm-yas-create-new-snippet-insert (selected-text snippet-file)
+  "Insert SELECTED-TEXT into SNIPPET-FILE."
+  (let* ((name (file-name-sans-extension
+                (file-name-nondirectory
+                 (directory-file-name snippet-file))))
+         (string-format "# -*- mode: snippet -*-\n#name : %s\n#key : %s\n#contributor : %s\n# --\n"))
+    (insert (format string-format name name user-full-name) selected-text)))
+
+(defun helm-yas-create-new-snippet-file (selected-text snippet-file)
+  "Create snippet file with inserted SELECTED-TEXT into SNIPPET-FILE."
+  (with-current-buffer (find-file snippet-file)
+    (snippet-mode)
+    (funcall helm-yas-create-new-snippet-insert-function selected-text snippet-file)
+    (save-buffer)))
+
 (defun helm-yas-create-new-snippet (selected-text &optional snippet-file)
   "Create snippet from SELECTED-TEXT into SNIPPET-FILE.
 If SNIPPET-FILE is nil, asks file name.
@@ -121,9 +141,7 @@ If SNIPPET-FILE does not contain directory, it is placed in default snippet dire
             (read-file-name "create snippet : " snippet-dir snippet-dir)))
     (when (file-exists-p snippet-file)
       (error "can't create file [%s] already exists" (file-name-nondirectory snippet-file)))
-    ;; create buffer, insert template
-    (find-file snippet-file)
-    (insert "# -*- mode: snippet -*-\n#name : \n#key : \n#contributor : myuhe\n# --\n" selected-text)))
+    (helm-yas-create-new-snippet-file selected-text snippet-file)))
 
 (defun helm-yas-find-recursively (regexp &optional directory predicate)
   (let ((directory (or directory default-directory))
