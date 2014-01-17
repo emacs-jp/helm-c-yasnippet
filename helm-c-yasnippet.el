@@ -339,7 +339,7 @@ space match anyword greedy"
         (yas-choose-tables-first nil)
         (yas-buffer-local-condition 'always))
     (with-current-buffer helm-current-buffer
-      (cl-mapcar 'yas-template-file
+      (cl-mapcar 'yas--template-file
                  (mapcar 'cdr
                          (helm-yas-all-templates))))))
 
