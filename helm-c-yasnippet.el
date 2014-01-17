@@ -126,8 +126,7 @@ ex. for (...) { ... }"
   "Create snippet file with inserted SELECTED-TEXT into SNIPPET-FILE."
   (with-current-buffer (find-file snippet-file)
     (snippet-mode)
-    (funcall helm-yas-create-new-snippet-insert-function selected-text snippet-file)
-    (save-buffer)))
+    (funcall helm-yas-create-new-snippet-insert-function selected-text snippet-file)))
 
 (defun helm-yas-create-new-snippet (selected-text &optional snippet-file)
   "Create snippet from SELECTED-TEXT into SNIPPET-FILE.
