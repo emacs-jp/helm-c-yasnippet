@@ -207,10 +207,6 @@ If SNIPPET-FILE does not contain directory, it is placed in default snippet dire
         result-alist)
       )))
 
-(defun helm-yas-get-modes ()
-  (let ((cur-major-mode helm-yas-cur-major-mode))
-    (list cur-major-mode)))
-
 (defun helm-yas-get-cmp-context ()
   "Return list (initial-input point-start point-end)
 like `yas--current-key'"
@@ -390,7 +386,6 @@ space match anyword greedy"
 (define-obsolete-function-alias 'helm-c-yas-create-new-snippet 'helm-yas-create-new-snippet "0.6.4")
 (define-obsolete-function-alias 'helm-c-yas-find-recursively 'helm-yas-find-recursively "0.6.4")
 (define-obsolete-function-alias 'helm-c-yas-build-cur-snippets-alist 'helm-yas-build-cur-snippets-alist "0.6.4")
-(define-obsolete-function-alias 'helm-c-yas-get-modes 'helm-yas-get-modes "0.6.4")
 (define-obsolete-function-alias 'helm-c-yas-get-cmp-context 'helm-yas-get-cmp-context "0.6.4")
 (define-obsolete-function-alias 'helm-c-yas-get-key-by-template 'helm-yas-get-key-by-template "0.6.4")
 (define-obsolete-function-alias 'helm-c-yas-get-candidates 'helm-yas-get-candidates "0.6.4")
