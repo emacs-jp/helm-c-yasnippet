@@ -376,8 +376,8 @@ space match anyword greedy"
 (define-obsolete-variable-alias 'helm-c-yas-initial-input 'helm-yas-initial-input "0.6.4")
 (define-obsolete-variable-alias 'helm-c-yas-point-start 'helm-yas-point-start "0.6.4")
 (define-obsolete-variable-alias 'helm-c-yas-point-end 'helm-yas-point-end "0.6.4")
-(define-obsolete-variable-alias 'helm-c-yas-cur-major-mode 'helm-yas-cur-major-mode "0.6.4")
 (define-obsolete-variable-alias 'helm-c-yas-selected-text 'helm-yas-selected-text "0.6.4")
+(define-obsolete-variable-alias 'helm-c-source-yasnippet 'helm-source-yasnippet "0.6.4")
 (define-obsolete-variable-alias 'helm-c-source-yasnippet-snippet-files 'helm-source-yasnippet-snippet-files "0.6.4")
 
 (define-obsolete-function-alias 'helm-c-yas-create-new-snippet 'helm-yas-create-new-snippet "0.6.4")
