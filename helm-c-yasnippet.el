@@ -111,7 +111,6 @@ ex. for (...) { ... }"
   :type 'function
   :group 'helm-yasnippet)
 
-(defvar helm-yas-cur-major-mode nil)
 (defvar helm-yas-cur-snippets-alist nil)
 
 (defun helm-yas-create-new-snippet-insert (selected-text snippet-file)
@@ -284,7 +283,6 @@ space match anyword greedy"
 (defvar helm-source-yasnippet
   `((name . "Yasnippet")
     (init . (lambda ()
-              (setq helm-yas-cur-major-mode major-mode)
               (setq helm-yas-selected-text (if mark-active (buffer-substring-no-properties (region-beginning) (region-end)) ""))
               (multiple-value-setq
                   (helm-yas-initial-input helm-yas-point-start helm-yas-point-end) (helm-yas-get-cmp-context)) ;return values(str point point)
@@ -380,7 +378,6 @@ space match anyword greedy"
 (define-obsolete-variable-alias 'helm-c-yas-point-end 'helm-yas-point-end "0.6.4")
 (define-obsolete-variable-alias 'helm-c-yas-cur-major-mode 'helm-yas-cur-major-mode "0.6.4")
 (define-obsolete-variable-alias 'helm-c-yas-selected-text 'helm-yas-selected-text "0.6.4")
-(define-obsolete-variable-alias 'helm-c-source-yasnippet 'helm-source-yasnippet "0.6.4")
 (define-obsolete-variable-alias 'helm-c-source-yasnippet-snippet-files 'helm-source-yasnippet-snippet-files "0.6.4")
 
 (define-obsolete-function-alias 'helm-c-yas-create-new-snippet 'helm-yas-create-new-snippet "0.6.4")
