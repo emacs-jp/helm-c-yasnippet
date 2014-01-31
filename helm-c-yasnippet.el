@@ -131,11 +131,16 @@ ex. for (...) { ... }"
   "Create snippet from SELECTED-TEXT into SNIPPET-FILE.
 If SNIPPET-FILE is nil, asks file name.
 If SNIPPET-FILE does not contain directory, it is placed in default snippet directory."
-  (let ((snippet-dir (helm-yas-find-recursively
-                      (regexp-quote (symbol-name major-mode))
-                      (expand-file-name
-                       (or (car-safe yas/root-directory) yas/root-directory))
-                      'snippet-file)))
+  (let* ((major-mode-dir (regexp-quote (symbol-name major-mode)))
+         (yas-dir (expand-file-name (or (car-safe yas/root-directory) yas/root-directory)))
+         (snippet-dir
+          (or (helm-yas-find-recursively major-mode-dir yas-dir 'snippet-file)
+              (let ((target-dir (format "%s/%s/" yas-dir major-mode-dir)))
+                (if (yes-or-no-p (format "%s doesn't exist. Would you like to create this directory?" target-dir))
+                    (progn (make-directory target-dir)
+                           (setq snippet-dir target-dir))
+                  (deactivate-mark)
+                  (error "Snippet creation failed"))))))
     (setq snippet-file
           (helm-aif snippet-file
               (expand-file-name snippet-file snippet-dir)
