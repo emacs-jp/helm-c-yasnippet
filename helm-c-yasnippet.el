@@ -198,7 +198,7 @@ If SNIPPET-FILE does not contain directory, it is placed in default snippet dire
               for template-struct = (cdr lst)
               for name = (yas--template-name template-struct) ;`yas--template-name'
               for template = (yas--template-content template-struct) ;`yas--template-content'
-              for file = (yas--template-file template-struct) ;`yas--template-content'
+              for file = (yas--template-load-file template-struct) ;`yas--template-content'
               do (progn (push template templates)
                         (push `(,name . ,template) transformed)
                         (push `(,template . ,key) template-key-alist)
@@ -338,7 +338,7 @@ space match anyword greedy"
         (yas-choose-tables-first nil)
         (yas-buffer-local-condition 'always))
     (with-current-buffer helm-current-buffer
-      (cl-mapcar 'yas--template-file
+      (cl-mapcar 'yas--template-load-file
                  (mapcar 'cdr
                          (helm-yas-all-templates))))))
 
