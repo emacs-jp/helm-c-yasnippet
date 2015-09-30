@@ -137,8 +137,9 @@ If SNIPPET-FILE does not contain directory, it is placed in default snippet dire
           (or (helm-yas-find-recursively major-mode-dir yas-dir 'snippet-file)
               (let ((target-dir (format "%s/%s/" yas-dir major-mode-dir)))
                 (if (yes-or-no-p (format "%s doesn't exist. Would you like to create this directory?" target-dir))
-                    (progn (make-directory target-dir)
-                           (setq snippet-dir target-dir))
+                    (progn
+                      (make-directory target-dir)
+                      target-dir)
                   (deactivate-mark)
                   (error "Snippet creation failed"))))))
     (setq snippet-file
