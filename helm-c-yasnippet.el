@@ -132,7 +132,7 @@ ex. for (...) { ... }"
 If SNIPPET-FILE is nil, asks file name.
 If SNIPPET-FILE does not contain directory, it is placed in default snippet directory."
   (let* ((major-mode-dir (regexp-quote (symbol-name major-mode)))
-         (yas-dir (expand-file-name (or (car-safe yas/root-directory) yas/root-directory)))
+         (yas-dir (expand-file-name (or (car-safe yas-snippet-dirs) yas-snippet-dirs)))
          (snippet-dir
           (or (helm-yas-find-recursively major-mode-dir yas-dir 'snippet-file)
               (let ((target-dir (format "%s/%s/" yas-dir major-mode-dir)))
