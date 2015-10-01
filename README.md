@@ -6,6 +6,15 @@ helm source for yasnippet.el
 ![helm-c-yasnippet](image/helm-c-yasnippet.png)
 
 
+## Installation
+
+`helm-c-yasnippet` is available on [MELPA][melpa] and [MELPA-STABLE][melpa-stable].
+
+You can install `helm-c-yasnippet` with the following command.
+
+<kbd>M-x package-install [RET] helm-c-yasnippet [RET]</kbd>
+
+
 ## Sample Configuration
 
 ```lisp
