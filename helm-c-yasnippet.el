@@ -5,7 +5,7 @@
 ;; Copyright (C) 2014 Yuhei Maeda <yuhei.maeda_at_gmail.com>, Yasuyuki Oka <yasuyk_at_gmail.com>
 
 ;; Author: Kenji.I (Kenji Imakado) <ken.imakaado@gmail.com>
-;; Version: 0.6.6
+;; Version: 0.6.7
 ;; Package-Requires: ((helm-core "1.7.7") (yasnippet "0.8.0") (cl-lib "0.3"))
 ;; Keywords: convenience, emulation
 
