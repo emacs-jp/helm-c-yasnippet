@@ -1,6 +1,10 @@
 # helm-c-yasnippet
 helm source for yasnippet.el
 
+## Screenshot
+
+![helm-c-yasnippet](image/helm-c-yasnippet.png)
+
 
 ## Sample Configuration
 
