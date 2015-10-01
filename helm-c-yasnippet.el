@@ -1,4 +1,4 @@
-;;; helm-c-yasnippet.el --- helm source for yasnippet.el
+;;; helm-c-yasnippet.el --- helm source for yasnippet.el -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2008, 2009, 2010, 2011 Kenji.I (Kenji Imakado) <ken.imakaado@gmail.com>
 ;; Copyright (C) 2012,2013 Yuhei Maeda <yuhei.maeda_at_gmail.com>
@@ -151,14 +151,14 @@ If SNIPPET-FILE does not contain directory, it is placed in default snippet dire
     (helm-yas-create-new-snippet-file selected-text snippet-file)))
 
 (defun helm-yas-find-recursively (regexp &optional directory predicate)
-  (let ((directory (or directory default-directory))
-        (predfunc (cl-case predicate
-                    (dir 'file-directory-p)
-                    (file 'file-regular-p)
-                    (otherwise 'identity)))
-        (files (cl-remove-if (lambda (s) (string-match "^\\." (file-name-nondirectory  s))) (directory-files directory t)))
-        (found nil)
-        (result nil))
+  (let* ((directory (or directory default-directory))
+         (predfunc (cl-case predicate
+                     (dir 'file-directory-p)
+                     (file 'file-regular-p)
+                     (otherwise 'identity)))
+         (files (cl-remove-if (lambda (s) (string-match "^\\." (file-name-nondirectory  s))) (directory-files directory t)))
+         (found nil)
+         (result nil))
     (cl-loop for file in files
              unless found
              do (if (and (funcall predfunc file)
@@ -185,7 +185,7 @@ If SNIPPET-FILE does not contain directory, it is placed in default snippet dire
         (cl-loop for hash in hashes
                  do (maphash (lambda (k v)
                                (let (a)
-                                 (maphash (lambda (n te)
+                                 (maphash (lambda (_n te)
                                             (setq a (append (list (cons k te)) a)))
                                           v)
                                  (setq hash-value-alist (append a hash-value-alist))))
