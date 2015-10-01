@@ -1,4 +1,5 @@
-# helm-c-yasnippet
+# helm-c-yasnippet [![melpa badge][melpa-badge]][melpa-link] [![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
+
 helm source for yasnippet.el
 
 ## Screenshot
@@ -8,7 +9,7 @@ helm source for yasnippet.el
 
 ## Installation
 
-`helm-c-yasnippet` is available on [MELPA][melpa] and [MELPA-STABLE][melpa-stable].
+`helm-c-yasnippet` is available on [MELPA][melpa-link] and [MELPA-STABLE][melpa-stable-link].
 
 You can install `helm-c-yasnippet` with the following command.
 
@@ -25,3 +26,8 @@ You can install `helm-c-yasnippet` with the following command.
 (yas-global-mode 1)
 (yas-load-directory "<path>/<to>/snippets/")
 ```
+
+[melpa-link]: https://melpa.org/#/helm-c-yasnippet
+[melpa-stable-link]: https://stable.melpa.org/#/helm-c-yasnippet
+[melpa-badge]: https://melpa.org/packages/helm-c-yasnippet-badge.svg
+[melpa-stable-badge]: https://stable.melpa.org/packages/helm-c-yasnippet-badge.svg
