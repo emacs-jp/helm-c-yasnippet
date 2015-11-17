@@ -113,7 +113,7 @@ ex. for (...) { ... }"
 
 (defface helm-yas-key '((t (:foreground "orange" :underline t)))
   "Face used in helm-yas-complete to show key triggers."
-  :group 'helm-command-faces)
+  :group 'helm-yasnippet)
 
 (defvar helm-yas-cur-snippets-alist nil)
 
