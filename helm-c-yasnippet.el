@@ -6,7 +6,7 @@
 
 ;; Author: Kenji.I (Kenji Imakado) <ken.imakaado@gmail.com>
 ;; Version: 0.6.7
-;; Package-Requires: ((helm-core "1.7.7") (yasnippet "0.8.0") (cl-lib "0.3"))
+;; Package-Requires: ((helm "1.7.7") (yasnippet "0.8.0") (cl-lib "0.3"))
 ;; Keywords: convenience, emulation
 
 ;; This file is free software; you can redistribute it and/or modify
@@ -72,6 +72,7 @@
 ;;; Code:
 (require 'cl-lib)
 (require 'helm)
+(require 'helm-files)
 (require 'yasnippet)
 
 (defgroup helm-yasnippet nil
@@ -348,12 +349,15 @@ space match anyword greedy"
                  (mapcar 'cdr
                          (helm-yas-all-templates))))))
 
+(defun helm-yas--visit-files-transformer (candidate)
+  (file-name-nondirectory candidate))
+
 ;; (helm 'helm-source-yasnippet-snippet-files)
 (defvar helm-source-yasnippet-snippet-files
-  '((name . "yasnippet snippet files")
-    (candidates . helm-yas-snippet-files-candidates)
-    (type . file)
-    ))
+  (helm-build-sync-source "yasnippet snippet files"
+    :candidates #'helm-yas-snippet-files-candidates
+    :real-to-display #'helm-yas--visit-files-transformer
+    :action (helm-actions-from-type-file)))
 
 
 ;;; Commands
