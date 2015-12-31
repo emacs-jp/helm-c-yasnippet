@@ -349,12 +349,15 @@ space match anyword greedy"
                  (mapcar 'cdr
                          (helm-yas-all-templates))))))
 
+(defun helm-yas--visit-files-transformer (candidate)
+  (file-name-nondirectory candidate))
+
 ;; (helm 'helm-source-yasnippet-snippet-files)
 (defvar helm-source-yasnippet-snippet-files
-  `((name . "yasnippet snippet files")
-    (candidates . helm-yas-snippet-files-candidates)
-    (action . ,(helm-actions-from-type-file))
-    ))
+  (helm-build-sync-source "yasnippet snippet files"
+    :candidates #'helm-yas-snippet-files-candidates
+    :real-to-display #'helm-yas--visit-files-transformer
+    :action (helm-actions-from-type-file)))
 
 
 ;;; Commands
