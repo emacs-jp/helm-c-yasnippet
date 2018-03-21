@@ -303,7 +303,11 @@ space match anyword greedy"
     (candidate-transformer . (lambda (candidates)
                                (helm-yas-get-transformed-list helm-yas-cur-snippets-alist helm-yas-initial-input)))
     (action . (("Insert snippet" . (lambda (template)
-                                     (yas-expand-snippet template helm-yas-point-start helm-yas-point-end)
+                                     (let ((start helm-yas-point-start)
+                                           (end helm-yas-point-end))
+                                       (when mark-active
+                                         (setq start (region-beginning) end (region-end)))  ; works as a surrounding snippet if mark is active
+                                       (yas-expand-snippet template start end))
                                      (when helm-yas-display-msg-after-complete
                                        (message "this snippet is bound to [ %s ]"
                                                 (helm-yas-get-key-by-template template helm-yas-cur-snippets-alist)))))
