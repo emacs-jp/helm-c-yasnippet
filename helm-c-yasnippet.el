@@ -259,7 +259,10 @@ like `yas--current-key'"
                                       for name = (car dotlst)
                                       for template = (cdr dotlst)
                                       for key = (helm-yas-get-key-by-template template alist)
-                                      for name-inc-key = (concat "[" (propertize key 'face 'helm-yas-key) "] " name)
+                                      for key-str = (cond ((stringp key) key)
+                                                          ((vectorp key) (key-description key))
+                                                          (t (format "%s" key)))
+                                      for name-inc-key = (concat "[" (propertize key-str 'face 'helm-yas-key) "] " name)
                                       collect `(,name-inc-key . ,template))))
 
      ;; default ex: for (...) { ... }
