@@ -179,7 +179,8 @@ If SNIPPET-FILE does not contain directory, it is placed in default snippet dire
   (let ((yas-choose-keys-first nil)
         (yas-choose-tables-first nil)
         (yas-buffer-local-condition 'always))
-    (let* ((result-alist '((candidates) (transformed) (template-key-alist) (template-file-alist)))
+    (let* ((result-alist '((candidates) (transformed) (template-key-alist)
+                           (template-file-alist) (template-expand-env-alist)))
            (cur-tables
             (if table
                 (list table)
@@ -199,21 +200,26 @@ If SNIPPET-FILE does not contain directory, it is placed in default snippet dire
                  with templates
                  with template-key-alist
                  with template-file-alist
+                 with template-expand-env-alist
                  for lst in hash-value-alist
                  for key = (car lst)
                  for template-struct = (cdr lst)
                  for name = (yas--template-name template-struct) ;`yas--template-name'
                  for template = (yas--template-content template-struct) ;`yas--template-content'
                  for file = (yas--template-load-file template-struct) ;`yas--template-content'
+                 for expand-env = (yas--template-expand-env template-struct)
                  do (progn (push template templates)
                            (push `(,name . ,template) transformed)
                            (push `(,template . ,key) template-key-alist)
                            (push `(,template . ,file) template-file-alist)
+                           (push `(,template . ,expand-env) template-expand-env-alist)
                            )
                  finally (progn (push `(candidates . ,templates) result-alist)
                                 (push `(transformed . ,transformed) result-alist)
                                 (push `(template-file-alist . ,template-file-alist) result-alist)
-                                (push `(template-key-alist . ,template-key-alist) result-alist)))
+                                (push `(template-key-alist . ,template-key-alist) result-alist)
+                                (push `(template-expand-env-alist . ,template-expand-env-alist) result-alist)
+                                ))
         result-alist)
       )))
 
@@ -278,6 +284,9 @@ like `yas--current-key'"
 (defun helm-yas-get-path-by-template (template)
   (assoc-default template (assoc-default 'template-file-alist helm-yas-cur-snippets-alist)))
 
+(defun helm-yas-get-expand-env-by-template (template)
+  (assoc-default template (assoc-default 'template-expand-env-alist helm-yas-cur-snippets-alist)))
+
 (defun helm-yas-match (candidate)
   "if customize variable `helm-yas-space-match-any-greedy' is non-nil
 space match anyword greedy"
@@ -303,7 +312,8 @@ space match anyword greedy"
     (candidate-transformer . (lambda (candidates)
                                (helm-yas-get-transformed-list helm-yas-cur-snippets-alist helm-yas-initial-input)))
     (action . (("Insert snippet" . (lambda (template)
-                                     (yas-expand-snippet template helm-yas-point-start helm-yas-point-end)
+                                     (yas-expand-snippet template helm-yas-point-start helm-yas-point-end
+                                                         (helm-yas-get-expand-env-by-template template))
                                      (when helm-yas-display-msg-after-complete
                                        (message "this snippet is bound to [ %s ]"
                                                 (helm-yas-get-key-by-template template helm-yas-cur-snippets-alist)))))
