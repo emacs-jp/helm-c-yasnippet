@@ -209,7 +209,7 @@ If SNIPPET-FILE does not contain directory, it is placed in default snippet dire
                  for file = (yas--template-load-file template-struct) ;`yas--template-content'
                  for condition = (yas--template-condition template-struct)
                  for expand-env = (yas--template-expand-env template-struct)
-                 when (or (not condition) (ignore-error (eval condition)))
+                 when (or (not condition) (ignore-errors (eval condition)))
                  do (progn (push template templates)
                            (push `(,name . ,template) transformed)
                            (push `(,template . ,key) template-key-alist)
