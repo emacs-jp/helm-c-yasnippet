@@ -167,7 +167,7 @@ If SNIPPET-FILE does not contain directory, it is placed in default snippet dire
     (cl-loop for file in files
              unless found
              do (if (and (funcall predfunc file)
-                         (string-match regexp file))
+                         (string-equal regexp (file-name-base file)))
                     (progn (setq found t)
                            (cl-return (file-name-as-directory file)))
                   (when (file-directory-p file)
