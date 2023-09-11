@@ -139,7 +139,7 @@ If SNIPPET-FILE does not contain directory, it is placed in default snippet dire
   (let* ((major-mode-dir (symbol-name major-mode))
          (yas-dir (file-name-as-directory (expand-file-name (or (car-safe yas-snippet-dirs) yas-snippet-dirs))))
          (snippet-dir
-          (or (helm-yas-find-recursively (regexp-quote major-mode-dir) yas-dir 'snippet-file)
+          (or (helm-yas-find-recursively major-mode-dir yas-dir 'dir)
               (let ((target-dir (file-name-as-directory (concat yas-dir major-mode-dir))))
                 (if (yes-or-no-p (format "%s doesn't exist. Would you like to create this directory?" target-dir))
                     (progn
@@ -155,7 +155,7 @@ If SNIPPET-FILE does not contain directory, it is placed in default snippet dire
       (error "can't create file [%s] already exists" (file-name-nondirectory snippet-file)))
     (helm-yas-create-new-snippet-file selected-text snippet-file)))
 
-(defun helm-yas-find-recursively (regexp &optional directory predicate)
+(defun helm-yas-find-recursively (name &optional directory predicate)
   (let* ((directory (or directory default-directory))
          (predfunc (cl-case predicate
                      (dir 'file-directory-p)
@@ -167,11 +167,11 @@ If SNIPPET-FILE does not contain directory, it is placed in default snippet dire
     (cl-loop for file in files
              unless found
              do (if (and (funcall predfunc file)
-                         (string-match regexp file))
+                         (string= name (file-name-nondirectory file)))
                     (progn (setq found t)
                            (cl-return (file-name-as-directory file)))
                   (when (file-directory-p file)
-                    (setq result (helm-yas-find-recursively regexp file predicate))))
+                    (setq result (helm-yas-find-recursively name file predicate))))
              finally (cl-return result))))
 
 
