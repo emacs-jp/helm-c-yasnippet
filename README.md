@@ -1,4 +1,4 @@
-# helm-c-yasnippet [![melpa badge][melpa-badge]][melpa-link] [![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
+# helm-c-yasnippet [![melpa badge][melpa-badge]][melpa-link] [![melpa stable badge][melpa-stable-badge]][melpa-stable-link] [![Github Actions Status][github-actions-badge]][github-actions-link]
 
 helm source for yasnippet.el
 
@@ -31,3 +31,5 @@ You can install `helm-c-yasnippet` with the following command.
 [melpa-stable-link]: https://stable.melpa.org/#/helm-c-yasnippet
 [melpa-badge]: https://melpa.org/packages/helm-c-yasnippet-badge.svg
 [melpa-stable-badge]: https://stable.melpa.org/packages/helm-c-yasnippet-badge.svg
+[github-actions-link]: https://github.com/emacs-jp/helm-c-yasnippet/actions
+[github-actions-badge]: https://github.com/emacs-jp/helm-c-yasnippet/workflows/CI/badge.svg
